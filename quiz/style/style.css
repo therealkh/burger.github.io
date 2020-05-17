@@ -13,6 +13,7 @@ li {
     border-radius: 0 0 10px 10px;
     min-width: 60px;
     text-align: center;
+    /* transform: ro; */
 }
 
 .answers-item label:hover {

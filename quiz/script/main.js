@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const formAnswers = document.getElementById("formAnswers");
   const prev = document.getElementById("prev");
   const next = document.getElementById("next");
+  const modalDialog = document.querySelector(".modal-dialog");
 
 // глобальные переменные
   const questions = [
@@ -80,14 +81,44 @@ document.addEventListener("DOMContentLoaded", () => {
       type: 'radio'
     }
   ];
+// анимация модалки
+  let openModalAnim;//Переменная анимации
+  let animateTop = -30,
+    animateOpacity = 0;
+  const animateModalOpen = () => {//Анимация открытия модалки
+    modalDialog.style.top = `${animateTop}%`;
+    modal.style.opacity = `${animateOpacity}`;
+    openModalAnim = requestAnimationFrame(animateModalOpen);
+    if (animateTop >= 0 && animateOpacity >= 1) {//когда останавливать анимацию
+      cancelAnimationFrame(openModalAnim);
+    } else {
+      if (animateTop < 0) { animateTop += 2;}
+      if (animateOpacity < 1) { animateOpacity += 0.07; }
+    }
+  }
+  const animateModalClose = () => {//Анимация закрытия модалки
+    modalDialog.style.top = `${animateTop}%`;
+    modal.style.opacity = `${animateOpacity}`;
+    openModalAnim = requestAnimationFrame(animateModalClose);
+    if (animateTop <= -30 && animateOpacity <= 0) {//когда останавливать анимацию
+      cancelAnimationFrame(openModalAnim);
+      modal.classList.toggle("d-block");
+    } else {
+      if (animateTop > -30) { animateTop -= 2; }
+      if (animateOpacity > 0) { animateOpacity -= 0.07; }
+    }
+  }
+
 // тут агенты ФСБ
   btnOpenModal.addEventListener("click", () => {
     modal.classList.toggle("d-block");
+    openModalAnim = requestAnimationFrame(animateModalOpen);
     playTest();
+
   });
 
   closeModal.addEventListener("click", () => {
-    modal.classList.toggle("d-block");
+    closeModalAnim = requestAnimationFrame(animateModalClose);
   });
 // Сам Квиз
   const playTest = () => {
